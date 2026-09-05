@@ -75,13 +75,11 @@ bus.out.gain.setTargetAtTime((fx.volume??100)/100,now,smooth);
 function scheduleGlobal(g,t){
 applyFxAutomation(Rlive,g,t);
 if(project.mode==='PAT'||!project.arr.length){triggerPat(Rlive,curPat(),g%patSteps(curPat()),t);return;}
-let played=false;
 for(const b of project.arr){
 const p=project.patterns.find(x=>x.id===b.patId);if(!p)continue;
 const L=patSteps(p);
-if(g>=b.start&&g<b.start+L){triggerPat(Rlive,p,(g-b.start)%L,t);played=true;}
+if(g>=b.start&&g<b.start+L){triggerPat(Rlive,p,(g-b.start)%L,t);}
 }
-if(!played&&project.arr.length){triggerPat(Rlive,curPat(),g%patSteps(curPat()),t);}
 }
 function startPlaybackAt(startStep){
 ensureAC();rebuildIdx();
