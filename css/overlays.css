@@ -1,0 +1,49 @@
+/* меню маркера */
+.markerMenu{position:fixed;z-index:120;width:240px;padding:13px;background:var(--panel2);border:1px solid var(--a1);border-radius:12px;box-shadow:0 18px 45px rgba(0,0,0,.65);display:flex;flex-direction:column;gap:9px}
+.markerMenu[hidden]{display:none}
+.markerTitle{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--tx2);padding-bottom:3px}
+.markerTitle b{color:var(--a1)}
+.markerMenu label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10px;color:var(--tx3);font-weight:800;text-transform:uppercase}
+.markerMenu select{width:132px;padding:6px;border:1px solid var(--line);border-radius:7px;background:#181b24;color:var(--tx);outline:none}
+.markerMenu input[type=range]{width:105px}
+.markerMenu output{min-width:38px;text-align:right;color:var(--a1)}
+.markerMenu>.btn{justify-content:center;padding:7px 9px;font-size:11px}
+.markerList{display:flex;flex-direction:column;gap:5px;max-height:130px;overflow:auto;border-top:1px solid var(--line);padding-top:8px}
+.markerItem{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--tx2)}
+.markerItem span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.markerItem b{color:var(--a1)}
+.markerItem button{font-size:15px;color:var(--tx3);padding:0 3px}
+.markerItem button:hover{color:#ff6b8d}
+#markerRampBtn{width:100%;justify-content:center}
+#markerRampBtn.acc{background:linear-gradient(135deg,var(--a3),var(--a2));box-shadow:0 6px 18px rgba(77,184,255,.35)}
+.fxMarkerPin.ramp{background:linear-gradient(135deg,var(--a3),var(--a2));border-color:rgba(255,255,255,.75)}
+/* библиотека */
+.library{padding:30px 0 10px;max-width:1340px;margin:0 auto}
+.libhead{display:flex;align-items:baseline;gap:14px;margin-bottom:16px}
+.libhead h2{font-size:20px;font-weight:900}
+.libhead .cnt{font-size:12px;color:var(--tx3);font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:14px;transition:.25s;animation:rise .5s both}
+.card:hover{transform:translateY(-4px);border-color:var(--a1);box-shadow:0 16px 36px rgba(0,0,0,.5)}
+.card .nm{font-family:'Unbounded';font-size:13px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .meta{font-size:11px;color:var(--tx3);margin-bottom:10px}
+.cacts{display:flex;gap:7px}
+.cacts .btn{padding:7px 11px;font-size:11.5px}
+.empty{border:1px dashed var(--line);border-radius:14px;padding:28px;text-align:center;color:var(--tx3);font-size:13px}
+.empty b{color:var(--a1)}
+footer{padding:24px 0 38px;color:var(--tx3);font-size:12px;display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between;border-top:1px solid var(--line);margin-top:28px;max-width:1340px;margin-left:auto;margin-right:auto}
+footer b{color:var(--tx2)}
+/* тосты */
+#toasts{position:fixed;right:20px;bottom:20px;z-index:100;display:flex;flex-direction:column;gap:9px}
+.toast{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--a1);border-radius:10px;padding:12px 16px;font-size:13px;font-weight:600;box-shadow:0 14px 34px rgba(0,0,0,.5);animation:tin .3s;max-width:330px;backdrop-filter:blur(8px)}
+.toast.err{border-left-color:#ff4d4d}
+@keyframes tin{from{opacity:0;transform:translateX(24px)}}
+.toast.out{opacity:0;transform:translateX(24px);transition:.3s}
+/* drag&drop */
+#drop{position:fixed;inset:0;z-index:90;background:rgba(11,12,18,.86);backdrop-filter:blur(6px);display:none;place-items:center}
+#drop.show{display:grid}
+#drop .in{border:2px dashed var(--a1);border-radius:20px;padding:56px 74px;font-family:'Unbounded';font-size:17px;text-align:center;animation:bob 1.6s infinite}
+#drop .in span{display:block;font-family:'Manrope';font-size:13px;color:var(--tx2);margin-top:10px}
+/* адаптив */
+@media(max-width:1020px){main{grid-template-columns:1fr}.colSide{position:static}.transport{margin-left:0}}
+@media(max-width:640px){:root{--cw:28px}.knob{min-width:90px}}

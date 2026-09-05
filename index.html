@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ОКТАВА — студия в стиле FL Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/workspace.css">
+<link rel="stylesheet" href="css/overlays.css">
+</head>
+<body>
+<div class="bg"><div class="lyr"></div><div class="grid"></div></div>
+
+<header>
+  <div class="hrow wrap">
+    <div class="logo">
+      <div class="eq" id="eq"><b></b><b></b><b></b><b></b><b></b></div>
+      <div>
+        <div class="nm">ОКТА<em>ВА</em></div>
+        <div class="tag">pattern · piano roll</div>
+      </div>
+    </div>
+    <div class="transport">
+      <div class="seg mode" id="modeSeg">
+        <button data-m="PAT" class="on">ПАТТЕРН</button>
+        <button data-m="SONG">ПЕСНЯ</button>
+      </div>
+      <div class="pos" id="posEl">1:1</div>
+      <button class="play" id="playBtn" title="Плей / стоп — пробел">
+        <svg id="icPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="icStop" viewBox="0 0 24 24" style="display:none"><path d="M6 6h12v12H6z"/></svg>
+      </button>
+      <div class="knob">
+        <label>Темп <output id="bpmOut">132</output></label>
+        <input type="range" id="bpmRange" min="60" max="200" value="132">
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="ribbon">
+  <canvas id="ribbon"></canvas>
+  <div class="hint" id="hint">Выбери звук слева → рисуй ноты в пиано-ролле → жми <b>▶</b></div>
+</div>
+
+<main class="wrap">
+  <aside class="colSide">
+
+    <section class="panel">
+      <div class="phead"><span class="tick"></span><h2>Звуки</h2><span class="sub">клик = в паттерн</span></div>
+      <div id="soundList"></div>
+      <div class="addSnd"><button class="btn acc" id="addSndBtn">＋ Добавить свой звук</button></div>
+      <input type="file" id="fileAudio" accept="audio/*" hidden>
+    </section>
+
+    <section class="panel">
+      <div class="phead"><span class="tick"></span><h2>Каналы паттерна</h2><span class="sub" id="chanSub"></span></div>
+      <div class="chanList" id="chanList"></div>
+    </section>
+
+    <section class="panel">
+      <div class="phead"><span class="tick"></span><h2>Эффекты</h2></div>
+      <div class="pbody">
+        <div>
+          <div class="flabel">Реверберация <output id="revOut">30%</output></div>
+          <input type="range" id="revR" min="0" max="100" value="30">
+        </div>
+        <label class="tgl"><span class="t">⛓ Сайдчейн от кика</span><input type="checkbox" id="sideT" checked><span class="sw"></span></label>
+        <div>
+          <div class="flabel">Громкость <output id="volOut">90%</output></div>
+          <input type="range" id="volR" min="0" max="100" value="90">
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="phead"><span class="tick"></span><h2>Проект</h2></div>
+      <div class="pbody">
+        <input id="titleInp" value="Мой трек" placeholder="Название трека">
+        <div class="xbtns">
+          <button class="btn acc" id="saveBtn">💾 Сохранить</button>
+          <button class="btn" id="expMp3">⬇ MP3</button>
+          <button class="btn" id="expWav">⬇ WAV</button>
+          <button class="btn" id="expMidi">⬇ MIDI</button>
+        </div>
+      </div>
+    </section>
+
+  </aside>
+
+  <div class="colMain">
+
+    <section class="panel">
+      <div class="phead"><span class="tick"></span><h2>Паттерны</h2><span class="sub">обрезка · копия · удаление</span></div>
+      <div class="patTools">
+        <input id="patName" value="Паттерн">
+        <div class="seg" id="patBars">
+          <button data-b="1">1</button><button data-b="2">2</button><button data-b="4">4</button><button data-b="8" class="on">8</button><button data-b="16">16</button>
+        </div>
+        <span class="fl">такты</span>
+        <button class="btn sm" id="patNew">＋ Новый</button>
+        <button class="btn sm" id="patCopy">📋 Копия</button>
+        <button class="btn sm ghost" id="patDel">🗑 Удалить</button>
+      </div>
+      <div class="patCards" id="patCards"></div>
+    </section>
+
+    <section class="panel">
+      <div class="phead"><span class="tick"></span><h2 id="rollTitle">Пиано-ролл</h2><span class="sub" id="rollSub"></span></div>
+      <div class="rollBar">
+        <span class="fl">Длина ноты</span>
+        <div class="seg" id="lenSeg">
+          <button data-l="1">1</button><button data-l="2" class="on">2</button><button data-l="4">4</button><button data-l="8">8</button><button data-l="16">16</button>
+        </div>
+        <button class="btn sm ghost" id="rollClear">✕ Очистить канал</button>
+        <span class="rHint">клик по пустому — нота (тянуть = длина) · перетаскивание — двигать · клик по ноте — удалить · правый край — обрезать/удлинить</span>
+      </div>
+      <div class="rollScroll">
+        <div class="rollKeys" id="rollKeys"></div>
+        <div class="rollGrid" id="rollGrid">
+          <div id="notesLayer"></div>
+          <div class="phLine" id="rollPh"></div>
+          <div class="rollEmpty" id="rollEmpty">Выберите звук в списке <b>слева</b>,<br>чтобы писать в нём ноты</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="phead"><span class="tick"></span><h2>Схема песни</h2><span class="sub">клик — поставить активный паттерн · клик по блоку — убрать · блок можно таскать</span></div>
+      <div class="rollBar">
+        <span class="fl">Длина</span>
+        <div class="seg" id="songBars">
+          <button data-b="8">8</button><button data-b="16" class="on">16</button><button data-b="32">32</button><button data-b="64">64</button>
+        </div>
+        <span class="fl">тактов</span>
+        <button class="btn sm ghost" id="arrClear">✕ Очистить</button>
+      </div>
+      <div class="arrNums" id="arrNums"></div>
+      <div class="arrScroll">
+        <div class="arrGrid" id="arrGrid"><div class="arrPh" id="arrPh"></div></div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<div class="wrap library">
+  <div class="libhead"><h2>Мои треки</h2><span class="cnt" id="libCnt"></span></div>
+  <div class="cards" id="cards"></div>
+  <div class="empty" id="libEmpty">Пока пусто. Соберите трек и нажмите <b>«Сохранить»</b> — он останется прямо в браузере.</div>
+</div>
+
+<footer class="wrap">
+  <span><b>ОКТАВА</b> — паттерны и звуки хранятся локально в браузере</span>
+  <span>Свои звуки: перетащите аудиофайл прямо на страницу</span>
+</footer>
+
+<div class="markerMenu" id="markerMenu" hidden>
+  <div class="markerTitle">Маркер на такт <b id="markerBarLabel">1</b></div>
+  <label>Эффект
+    <select id="markerEffect">
+      <option value="delay">Delay</option>
+      <option value="eqHigh">EQ High</option>
+      <option value="eqMid">EQ Mid</option>
+      <option value="eqLow">EQ Low</option>
+      <option value="volume">Volume</option>
+    </select>
+  </label>
+  <label>Инструмент <select id="markerInstrument"></select></label>
+  <label>Значение <input type="range" id="markerValue" min="0" max="100" value="70"><output id="markerValueOut">70%</output></label>
+  <button class="btn" id="markerRampBtn">⛰ Горка: выкл</button>
+  <div class="markerList" id="markerList"></div>
+  <button class="btn acc" id="addMarkerBtn">＋ Добавить маркер</button>
+</div>
+
+<div id="drop"><div class="in">Отпустите аудиофайл<span>он станет новым инструментом — рисуйте им мелодию в пиано-ролле</span></div></div>
+<div id="toasts"></div>
+
+<script src="js/01-utils.js"></script>
+<script src="js/02-model.js"></script>
+<script src="js/03-audio.js"></script>
+<script src="js/04-player.js"></script>
+<script src="js/05-ui-library.js"></script>
+<script src="js/06-pianoroll.js"></script>
+<script src="js/07-arrange.js"></script>
+<script src="js/08-fx.js"></script>
+<script src="js/09-visual.js"></script>
+<script src="js/10-io.js"></script>
+<script src="js/11-storage.js"></script>
+<script src="js/12-init.js"></script>
+</body>
+</html>
