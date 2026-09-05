@@ -45,9 +45,9 @@ function arrPoint(e){
 const r=arrGrid.getBoundingClientRect();
 const x=e.clientX-r.left-ARR_GUTTER;
 if(x<0)return null;
-const beat=clamp(Math.floor(x/(barW()/4)),0,project.songBars*4-1);
+const step=clamp(Math.floor(x/(barW()/4)),0,project.songBars*4-1);
 const track=clamp(Math.floor((e.clientY-r.top)/TRACK_H),0,ARR_TRACKS-1);
-return {start:beat*4,track};
+return {start:step,track};
 }
 function seekStep(e){
 const r=arrGrid.getBoundingClientRect();
